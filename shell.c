@@ -37,15 +37,8 @@ int main ()
 	    }
 	  args[count] = NULL;
 	  count = 0;
-	  printf("%s",args[0]);
-	  if (args[0] == "pwd")
+	   if (!strcmp(args[0],"cd"))
 	    {
-	      getcwd(buf,50);
-	      printf("%s",buf);
-	    }
-	  else if (args[0]== "cd")
-	    {
-	      printf("%s",args[1]);
 	      chdir(args[1]);
 	    }
 	  else
