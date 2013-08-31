@@ -10,14 +10,14 @@ int main ()
     char  in[30];
     char* strp;
     char* args[30];
+    char* buf;
     int count = 0;
     pid_t child,parent;
     int temp;
     while(1)
     {
-      //in = "";
-    this:
-      printf("shell>> ");
+      
+      printf("shell>>");
       fgets(in,30,stdin);
       if ((strlen(in)>0) && (in[strlen (in) - 1] == '\n'))
         in[strlen (in) - 1] = '\0';
@@ -37,16 +37,30 @@ int main ()
 	    }
 	  args[count] = NULL;
 	  count = 0;
-	  switch (fork())
+	  printf("%s",args[0]);
+	  if (args[0] == "pwd")
 	    {
-	    case -1:break;
-	    case 0:
-	      execvp(args[0],args);
-	      exit(0);
-	      break;
-	    default:
-	      wait();
-	      break;
+	      getcwd(buf,50);
+	      printf("%s",buf);
+	    }
+	  else if (args[0]== "cd")
+	    {
+	      printf("%s",args[1]);
+	      chdir(args[1]);
+	    }
+	  else
+	    {
+	      switch (fork())
+		{
+		case -1:break;
+		case 0:
+		  execvp(args[0],args);
+		  exit(0);
+		  break;
+		default:
+		  wait();
+		  break;
+		}
 	    }
 	}
     }
