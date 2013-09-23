@@ -3,6 +3,7 @@
 #include<unistd.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<sys/wait.h>
  
 int main ()
 {
@@ -66,10 +67,11 @@ int main ()
 		default:
 		  if(background)
 		    {
+		      background = 0;
 		      printf("new process %d spawned\n",pid);
 		    }
 		  else
-		    wait();
+		    waitpid(pid,0,0);
 		 
 		}
 	    }
