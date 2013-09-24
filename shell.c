@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<sys/wait.h>
+#include<errno.h>
 
 #define MAX_INPUT 100
 #define MAX_ARGS 30
@@ -64,7 +65,11 @@ int main ()
 
 	   if (!strcmp(args[0],"cd"))
 	    {
-	      chdir(args[1]);
+	      status = chdir(args[1]);
+	      if(status != 0)
+		{
+		  printf("cd: %s %s\n",strerror(errno),args[1]);
+		}
 	    }
 	   else if(!strcmp(args[0],"wait"))
 	     {
@@ -89,7 +94,8 @@ int main ()
 		case -1:break;
 		case 0:
 		  execvp(args[0],args);
-		  exit(0);
+		  perror(args[0]);
+		  exit(EXIT_FAILURE);
 		  break;
 		default:
 		  if(background)
